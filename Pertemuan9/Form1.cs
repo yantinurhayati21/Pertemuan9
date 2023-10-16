@@ -16,9 +16,11 @@ namespace Pertemuan9
         {
             InitializeComponent();
         }
+
         double temp;
         char oper;
         bool oper1;
+
         private void Form1_Load(object sender, EventArgs e)
         {
             bersih();
@@ -31,14 +33,15 @@ namespace Pertemuan9
             txtinput.Text = "";
             temp = 0;
             oper = ' ';
-            oper1= false;
+            oper1 = false;
         }
 
         private void focus()
         {
             txthasil.Focus();
-            txthasil.Select(txthasil.Text.Length,1);
+            txthasil.Select(txthasil.Text.Length, 0);
         }
+
         private void btnC_Click(object sender, EventArgs e)
         {
             bersih();
@@ -48,40 +51,43 @@ namespace Pertemuan9
         private void btnAngka_Click(object sender, EventArgs e)
         {
             Button btnAng = (Button)sender;
-            if(txthasil.Text=="0")
+            if (txthasil.Text == "0" || oper1)
             {
-                txthasil.Clear();
+                txthasil.Text = btnAng.Text;
+                oper1 = false;
             }
-
-            if(oper=='=')
+            else
             {
-                oper = ' ';
-                oper1= false;
-                temp = 0;
+                txthasil.Text += btnAng.Text;
             }
-            txthasil.Text = txthasil.Text + btnAng.Text;
             focus();
         }
 
         private void btnOperator_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("Succes");
             Button op = (Button)sender;
-            if(oper1==false)
+            if (oper1)
             {
-                if(txtinput.Text=="")
+                oper1 = false;
+            }
+            else
+            {
+                if (txtinput.Text == "")
                 {
-                    temp=Convert.ToDouble(txtinput.Text);
-                }else
+                    temp = Convert.ToDouble(txthasil.Text);
+                }
+                else
                 {
-                    if(oper=='+')
+                    if (oper == '+')
                     {
                         temp = temp + Convert.ToDouble(txthasil.Text);
                     }
-                    else if(oper== '-')
+                    else if (oper == '-')
                     {
-                        temp=temp-Convert.ToDouble(txthasil.Text);
+                        temp = temp - Convert.ToDouble(txthasil.Text);
                     }
-                    else if (oper == ':')
+                    else if (oper == '/')
                     {
                         temp = temp / Convert.ToDouble(txthasil.Text);
                     }
@@ -91,31 +97,29 @@ namespace Pertemuan9
                     }
                 }
             }
-            if(oper=='=')
-            {
-                txtinput.Text = "";
-                txthasil.Text=temp.ToString();
 
-            }
-            else
-            {
-                txtinput.Text=temp.ToString() + op.Text;
-                txtinput.Text = "0";
-            }
-            oper=Convert.ToChar(op.Text);
+            txtinput.Text = temp.ToString() + op.Text;
+            txthasil.Text = "0";
+            oper = Convert.ToChar(op.Text);
             focus();
         }
 
         private void btnHapus_Click(object sender, EventArgs e)
         {
-            txthasil.Text= txthasil.Text.Remove(txthasil.Text.Length-1);
-            if(oper=='=')
+            if (txthasil.Text.Length > 0)
+            {
+                txthasil.Text = txthasil.Text.Remove(txthasil.Text.Length - 1);
+            }
+
+            if (oper == '=')
             {
                 temp = 0;
-                oper1= false;
+                oper1 = false;
                 oper = ' ';
             }
+
             focus();
         }
     }
 }
+
